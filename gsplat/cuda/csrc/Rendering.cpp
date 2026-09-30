@@ -29,6 +29,7 @@
 #include "Cameras.h"
 #include "Common.h"
 #include "Config.h"
+#include "Dispatch.h"
 #include "DistributedCollectives.h"
 #include "Intersect.h"
 #include "Projection.h"
@@ -1862,8 +1863,15 @@ Rasterization2DGSResult rasterization_2dgs(
             feature = colors;
         }
     }
+    // The rasterizer reads the median depth (and routes its gradient) from the
+    // last feature channel. Color-only modes have no depth there, so append a
+    // hidden depth channel and strip it after rasterization. If the widened
+    // channel count was not compiled in (GSPLAT_NUM_CHANNELS), skip it and
+    // render_median keeps reading the last color channel.
+    const bool append_median_depth
+        = has_color && !append_depth && dispatch::IntParam<GSPLAT_NUM_CHANNELS>::contains(feature.size(-1) + 1);
     at::optional<at::Tensor> raster_backgrounds = backgrounds;
-    if(append_depth)
+    if(append_depth || append_median_depth)
     {
         if(has_color)
         {
@@ -1908,6 +1916,10 @@ Rasterization2DGSResult rasterization_2dgs(
     at::Tensor means2d_absgrad = raster.means2d_absgrad;
 
     // --- Post-process render-mode outputs ---------------------------------
+    if(append_median_depth)
+    {
+        render_colors = render_colors.narrow(-1, 0, render_colors.size(-1) - 1);
+    }
     // Normalize the accumulated depth channel by alpha for expected-depth modes.
     if(expected_depth)
     {

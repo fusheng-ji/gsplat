@@ -670,6 +670,67 @@ def test_rasterization_2dgs_depth_backward(test_data, packed: bool, render_mode:
     assert torch.isfinite(means.grad).all()
 
 
+def _median_test_scene(test_data, packed: bool):
+    """Gaussians in front of a single camera with SH colors, and a renderer for them."""
+    from gsplat.rendering import rasterization_2dgs
+
+    torch.manual_seed(42)
+    N = test_data["means"].shape[-2]
+    means = test_data["means"].clone()
+    means[:, 2] = means[:, 2].abs() + 2.0  # keep the Gaussians in front of the cameras
+    opacities = torch.rand(N, device=device) * 0.5 + 0.5
+    sh_degree = 3
+    colors = torch.randn(N, (sh_degree + 1) ** 2, 3, device=device)
+
+    def render(render_mode, means=means, colors=colors, **kwargs):
+        return rasterization_2dgs(
+            means=means,
+            quats=test_data["quats"],
+            scales=test_data["scales"],
+            opacities=opacities,
+            colors=colors,
+            viewmats=test_data["viewmats"][:1],
+            Ks=test_data["Ks"][:1],
+            width=test_data["width"],
+            height=test_data["height"],
+            sh_degree=sh_degree,
+            packed=packed,
+            render_mode=render_mode,
+            **kwargs,
+        )
+
+    return means, colors, render
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
+@pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
+@pytest.mark.parametrize("packed", [False, True])
+def test_rasterization_2dgs_median_depth_rgb_mode(test_data, packed: bool):
+    # The rasterizer reads the median depth from the last feature channel. In
+    # "RGB" mode that channel used to be blue, so render_median returned color
+    # values and its gradient leaked into the blue channel (issue #714).
+    means, colors, render = _median_test_scene(test_data, packed)
+
+    means_rgb = means.clone().requires_grad_(True)
+    means_rgbd = means.clone().requires_grad_(True)
+    colors_rgb = colors.clone().requires_grad_(True)
+    rgb, _, _, _, _, median_rgb, _ = render("RGB", means_rgb, colors_rgb)
+    rgbd, _, _, _, _, median_rgbd, _ = render("RGB+ED", means_rgbd)
+
+    assert rgb.shape[-1] == 3
+    assert (median_rgb > 0).any()
+    torch.testing.assert_close(rgb, rgbd[..., :3])
+    torch.testing.assert_close(median_rgb, median_rgbd)
+
+    # Median depth depends on geometry only: its gradient reaches the means as
+    # it does in a depth mode, and never the colors.
+    median_rgb.sum().backward()
+    median_rgbd.sum().backward()
+    assert means_rgb.grad.abs().sum() > 0
+    torch.testing.assert_close(means_rgb.grad, means_rgbd.grad)
+    torch.testing.assert_close(colors_rgb.grad, torch.zeros_like(colors_rgb.grad))
+
+
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
 def test_rasterize_to_pixels_2dgs_densify_gradient():

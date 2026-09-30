@@ -639,6 +639,39 @@ def test_rasterize_to_pixels_2dgs_masked_tile_outputs_initialized():
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
+@pytest.mark.parametrize("packed", [False, True])
+@pytest.mark.parametrize("render_mode", ["RGB", "RGB+D", "RGB+ED"])
+def test_rasterization_2dgs_depth_backward(test_data, packed: bool, render_mode: str):
+    # The depth channel is sliced off the rendered features, so the projection
+    # backward receives a non-contiguous depths gradient. It used to reject it,
+    # which broke training in the RGB+D / RGB+ED modes (simple_trainer_2dgs.py).
+    from gsplat.rendering import rasterization_2dgs
+
+    torch.manual_seed(42)
+    N = test_data["means"].shape[-2]
+    means = test_data["means"].clone().requires_grad_(True)
+    sh_degree = 3
+    render_colors, _, _, _, _, render_median, _ = rasterization_2dgs(
+        means=means,
+        quats=test_data["quats"],
+        scales=test_data["scales"],
+        opacities=torch.rand(N, device=device),
+        colors=torch.randn(N, (sh_degree + 1) ** 2, 3, device=device),
+        viewmats=test_data["viewmats"][:1],
+        Ks=test_data["Ks"][:1],
+        width=test_data["width"],
+        height=test_data["height"],
+        sh_degree=sh_degree,
+        packed=packed,
+        render_mode=render_mode,
+    )
+    (render_colors.sum() + render_median.sum()).backward()
+    assert means.grad is not None
+    assert torch.isfinite(means.grad).all()
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
+@pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
 def test_rasterize_to_pixels_2dgs_densify_gradient():
     # The densification gradient is the gradient w.r.t. the `densify` input and
     # equals the depth-scaled ray-transform z-gradients:

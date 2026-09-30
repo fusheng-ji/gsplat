@@ -572,6 +572,66 @@ def test_rasterization_packed_2dgs_pose_grad_large_nnz():
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
+@pytest.mark.parametrize("render_mode", ["RGB", "RGB+ED"])
+def test_rasterization_2dgs_multi_camera(render_mode: str):
+    # Non-packed rendering broadcasts the [N] opacities across cameras; with
+    # more than one camera that used to reach the rasterizer non-contiguous
+    # and fail. Each camera must match rendering it on its own.
+    from gsplat.rendering import rasterization_2dgs
+
+    torch.manual_seed(42)
+    C, N, W, H = 3, 1000, 64, 48
+    means = torch.randn(N, 3, device=device)
+    means[:, 2] = means[:, 2].abs() + 3.0
+    quats = torch.nn.functional.normalize(torch.randn(N, 4, device=device), dim=-1)
+    scales = torch.rand(N, 3, device=device) * 0.1
+    opacities = torch.rand(N, device=device)
+    sh_degree = 3
+    colors = torch.randn(N, (sh_degree + 1) ** 2, 3, device=device)
+    viewmats = torch.eye(4, device=device).repeat(C, 1, 1)
+    viewmats[:, 0, 3] = torch.linspace(-0.5, 0.5, C, device=device)
+    Ks = torch.tensor(
+        [[W, 0.0, W / 2], [0.0, W, H / 2], [0.0, 0.0, 1.0]], device=device
+    ).repeat(C, 1, 1)
+
+    def render(means, viewmats, Ks, opacities=opacities):
+        return rasterization_2dgs(
+            means=means,
+            quats=quats,
+            scales=scales,
+            opacities=opacities,
+            colors=colors,
+            viewmats=viewmats,
+            Ks=Ks,
+            width=W,
+            height=H,
+            sh_degree=sh_degree,
+            render_mode=render_mode,
+        )
+
+    means_all = means.clone().requires_grad_(True)
+    colors_all, alphas_all, *_ = render(means_all, viewmats, Ks)
+    assert colors_all.shape[0] == C
+
+    for c in range(C):
+        colors_c, alphas_c, *_ = render(means, viewmats[c : c + 1], Ks[c : c + 1])
+        torch.testing.assert_close(colors_all[c : c + 1], colors_c)
+        torch.testing.assert_close(alphas_all[c : c + 1], alphas_c)
+
+    if render_mode == "RGB":
+        colors_all.sum().backward()
+        means_sum = means.clone().requires_grad_(True)
+        for c in range(C):
+            render(means_sum, viewmats[c : c + 1], Ks[c : c + 1])[0].sum().backward()
+        torch.testing.assert_close(means_all.grad, means_sum.grad)
+
+    # Opacities are shared across cameras; a per-camera shape is rejected.
+    with pytest.raises(RuntimeError, match=r"opacities must have shape \[\.\.\., N\]"):
+        render(means, viewmats, Ks, opacities=opacities.expand(C, N))
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
+@pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
 def test_rasterize_to_pixels_2dgs_masked_tile_outputs_initialized():
     # A masked-out tile takes the forward rasterizer's early-return branch,
     # which must initialize ALL of its pixel outputs (the binding allocates

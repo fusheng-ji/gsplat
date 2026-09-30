@@ -866,3 +866,66 @@ def test_rasterization_distributed_single_rank_matches_local(
             local_in[key].grad,
             name=f"distributed gradient mismatch for {key}",
         )
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
+@pytest.mark.skipif(not gsplat.has_3dgut(), reason="3DGUT/Lidar support isn't built in")
+def test_rasterization_lidar_tiling_fits_tile_size():
+    # Lidar renders with tile_size=8, whose kernels process at most 64 elements
+    # per tile. Elements past that were never written, so a tiling built for
+    # 16x16 tiles returned uninitialized renders/alphas (issue #1031).
+    from gsplat.rendering import rasterization
+
+    torch.manual_seed(42)
+    lidar_params, angles_to_columns_map, _ = parse_lidar_camera(
+        "at128", (), 0, 0, device=device, seed=0
+    )
+
+    def make_lidar(tiling):
+        return gsplat.RowOffsetStructuredSpinningLidarModelParametersExt(
+            lidar_params, angles_to_columns_map, tiling
+        )
+
+    N = 1000
+    means = torch.randn(N, 3, device=device) * 5.0
+    quats = torch.nn.functional.normalize(torch.randn(N, 4, device=device), dim=-1)
+    scales = torch.rand(N, 3, device=device) * 0.5
+    opacities = torch.rand(N, device=device)
+    colors = torch.rand(N, 3, device=device)
+    viewmats = torch.eye(4, device=device)[None]
+    Ks = torch.eye(3, device=device)[None]
+
+    def render(lidar):
+        return rasterization(
+            means=means,
+            quats=quats,
+            scales=scales,
+            opacities=opacities,
+            colors=colors,
+            viewmats=viewmats,
+            Ks=Ks,
+            width=lidar.n_columns,
+            height=lidar.n_rows,
+            packed=False,
+            with_eval3d=True,
+            with_ut=True,
+            camera_model="lidar",
+            lidar_coeffs=lidar,
+        )
+
+    # The default tiling matches the default lidar tile size.
+    lidar = make_lidar(gsplat.compute_lidar_tiling(lidar_params))
+    assert lidar.tiling.max_elements_per_tile <= 8 * 8
+    renders, alphas, _ = render(lidar)
+    assert ((alphas >= 0) & (alphas <= 1)).all()
+    renders_again, alphas_again, _ = render(lidar)
+    torch.testing.assert_close(renders, renders_again, atol=0, rtol=0)
+    torch.testing.assert_close(alphas, alphas_again, atol=0, rtol=0)
+
+    # A tiling with more elements per tile than the kernel covers is rejected.
+    coarse = make_lidar(
+        gsplat.compute_lidar_tiling(lidar_params, max_pts_per_tile=16 * 16)
+    )
+    assert coarse.tiling.max_elements_per_tile > 8 * 8
+    with pytest.raises(ValueError, match="max_pts_per_tile=64"):
+        render(coarse)

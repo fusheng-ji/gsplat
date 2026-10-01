@@ -664,6 +664,7 @@ def test_rasterization_2dgs_depth_backward(test_data, packed: bool, render_mode:
         sh_degree=sh_degree,
         packed=packed,
         render_mode=render_mode,
+        compute_median=True,
     )
     (render_colors.sum() + render_median.sum()).backward()
     assert means.grad is not None
@@ -714,8 +715,10 @@ def test_rasterization_2dgs_median_depth_rgb_mode(test_data, packed: bool):
     means_rgb = means.clone().requires_grad_(True)
     means_rgbd = means.clone().requires_grad_(True)
     colors_rgb = colors.clone().requires_grad_(True)
-    rgb, _, _, _, _, median_rgb, _ = render("RGB", means_rgb, colors_rgb)
-    rgbd, _, _, _, _, median_rgbd, _ = render("RGB+ED", means_rgbd)
+    rgb, _, _, _, _, median_rgb, _ = render(
+        "RGB", means_rgb, colors_rgb, compute_median=True
+    )
+    rgbd, _, _, _, _, median_rgbd, _ = render("RGB+ED", means_rgbd, compute_median=True)
 
     assert rgb.shape[-1] == 3
     assert (median_rgb > 0).any()
@@ -729,6 +732,36 @@ def test_rasterization_2dgs_median_depth_rgb_mode(test_data, packed: bool):
     assert means_rgb.grad.abs().sum() > 0
     torch.testing.assert_close(means_rgb.grad, means_rgbd.grad)
     torch.testing.assert_close(colors_rgb.grad, torch.zeros_like(colors_rgb.grad))
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
+@pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
+@pytest.mark.parametrize("packed", [False, True])
+def test_rasterization_2dgs_compute_median(test_data, packed: bool):
+    # In color-only modes the median depth costs an extra rendered channel, so
+    # it is only computed on request; otherwise render_median is all zeros.
+    means, colors, render = _median_test_scene(test_data, packed)
+
+    colors_off = colors.clone().requires_grad_(True)
+    rgb_off, _, _, _, _, median_off, _ = render("RGB", colors=colors_off)
+    rgb_on, _, _, _, _, median_on, _ = render("RGB", compute_median=True)
+    torch.testing.assert_close(rgb_off, rgb_on)
+    assert (median_on > 0).any()
+    torch.testing.assert_close(median_off, torch.zeros_like(median_off))
+    # The zero median is not connected to the colors, so it has no gradient.
+    assert rgb_off.requires_grad and not median_off.requires_grad
+
+    # Render modes with a depth channel always compute the median depth.
+    _, _, _, _, _, median_ed, _ = render("RGB+ED")
+    _, _, _, _, _, median_ed_on, _ = render("RGB+ED", compute_median=True)
+    torch.testing.assert_close(median_ed, median_on)
+    torch.testing.assert_close(median_ed_on, median_on)
+
+    # Requesting the median needs the widened channel count to be compiled in;
+    # 6 color channels widen to 7, which is not in the default list.
+    colors6 = torch.randn(*colors.shape[:-1], 6, device=device)
+    with pytest.raises(ValueError, match="compute_median=True"):
+        render("RGB", colors=colors6, compute_median=True)
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")

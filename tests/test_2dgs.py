@@ -572,7 +572,7 @@ def test_rasterization_packed_2dgs_pose_grad_large_nnz():
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.skipif(not gsplat.has_2dgs(), reason="2DGS support wasn't built")
-@pytest.mark.parametrize("render_mode", ["RGB", "RGB+ED"])
+@pytest.mark.parametrize("render_mode", ["RGB", "D", "ED", "RGB+D", "RGB+ED"])
 def test_rasterization_2dgs_multi_camera(render_mode: str):
     # Non-packed rendering broadcasts the [N] opacities across cameras; with
     # more than one camera that used to reach the rasterizer non-contiguous
@@ -610,7 +610,8 @@ def test_rasterization_2dgs_multi_camera(render_mode: str):
         )
 
     means_all = means.clone().requires_grad_(True)
-    colors_all, alphas_all, *_ = render(means_all, viewmats, Ks)
+    opacities_all = opacities.clone().requires_grad_(True)
+    colors_all, alphas_all, *_ = render(means_all, viewmats, Ks, opacities_all)
     assert colors_all.shape[0] == C
 
     for c in range(C):
@@ -618,16 +619,32 @@ def test_rasterization_2dgs_multi_camera(render_mode: str):
         torch.testing.assert_close(colors_all[c : c + 1], colors_c)
         torch.testing.assert_close(alphas_all[c : c + 1], alphas_c)
 
-    if render_mode == "RGB":
-        colors_all.sum().backward()
-        means_sum = means.clone().requires_grad_(True)
-        for c in range(C):
-            render(means_sum, viewmats[c : c + 1], Ks[c : c + 1])[0].sum().backward()
-        torch.testing.assert_close(means_all.grad, means_sum.grad)
-
     # Opacities are shared across cameras; a per-camera shape is rejected.
     with pytest.raises(RuntimeError, match=r"opacities must have shape \[\.\.\., N\]"):
         render(means, viewmats, Ks, opacities=opacities.expand(C, N))
+
+    try:
+        colors_all.sum().backward()
+    except RuntimeError as error:
+        # RGB+depth backward needs the projection-gradient fix in PR #1068.
+        # Once present, this test must compare gradients instead of xpassing.
+        if render_mode in ("RGB+D", "RGB+ED") and str(error) == (
+            "grad.depths must be contiguous"
+        ):
+            pytest.xfail("RGB+depth backward requires PR #1068")
+        raise
+    means_sum = means.clone().requires_grad_(True)
+    opacities_sum = opacities.clone().requires_grad_(True)
+    for c in range(C):
+        render(means_sum, viewmats[c : c + 1], Ks[c : c + 1], opacities_sum)[
+            0
+        ].sum().backward()
+    assert torch.isfinite(opacities_all.grad).all()
+    assert opacities_all.grad.abs().sum() > 0
+    torch.testing.assert_close(opacities_all.grad, opacities_sum.grad)
+    assert torch.isfinite(means_all.grad).all()
+    assert means_all.grad.abs().sum() > 0
+    torch.testing.assert_close(means_all.grad, means_sum.grad)
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")

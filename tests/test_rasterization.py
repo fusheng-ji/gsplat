@@ -895,7 +895,7 @@ def test_rasterization_lidar_tiling_fits_tile_size():
     viewmats = torch.eye(4, device=device)[None]
     Ks = torch.eye(3, device=device)[None]
 
-    def render(lidar):
+    def render(lidar, tile_size=None, backgrounds=None):
         return rasterization(
             means=means,
             quats=quats,
@@ -911,16 +911,27 @@ def test_rasterization_lidar_tiling_fits_tile_size():
             with_ut=True,
             camera_model="lidar",
             lidar_coeffs=lidar,
+            tile_size=tile_size,
+            backgrounds=backgrounds,
         )
 
     # The default tiling matches the default lidar tile size.
     lidar = make_lidar(gsplat.compute_lidar_tiling(lidar_params))
-    assert lidar.tiling.max_elements_per_tile <= 8 * 8
     renders, alphas, _ = render(lidar)
     assert ((alphas >= 0) & (alphas <= 1)).all()
     renders_again, alphas_again, _ = render(lidar)
     torch.testing.assert_close(renders, renders_again, atol=0, rtol=0)
     torch.testing.assert_close(alphas, alphas_again, atol=0, rtol=0)
+
+    # With transparent Gaussians every pixel must contain the background and
+    # zero alpha. This catches unwritten pixels without relying on the new
+    # max_elements_per_tile property or on repeat allocations changing values.
+    opacities.zero_()
+    background = torch.tensor([[0.25, 0.5, 0.75]], device=device)
+    renders, alphas, _ = render(lidar, backgrounds=background)
+    torch.testing.assert_close(renders, background.expand_as(renders), atol=0, rtol=0)
+    torch.testing.assert_close(alphas, torch.zeros_like(alphas), atol=0, rtol=0)
+    assert lidar.tiling.max_elements_per_tile <= 8 * 8
 
     # A tiling with more elements per tile than the kernel covers is rejected.
     coarse = make_lidar(
@@ -929,3 +940,8 @@ def test_rasterization_lidar_tiling_fits_tile_size():
     assert coarse.tiling.max_elements_per_tile > 8 * 8
     with pytest.raises(ValueError, match="max_pts_per_tile=64"):
         render(coarse)
+
+    # Coarse tilings remain supported when the rasterizer uses matching tiles.
+    renders, alphas, _ = render(coarse, tile_size=16, backgrounds=background)
+    torch.testing.assert_close(renders, background.expand_as(renders), atol=0, rtol=0)
+    torch.testing.assert_close(alphas, torch.zeros_like(alphas), atol=0, rtol=0)

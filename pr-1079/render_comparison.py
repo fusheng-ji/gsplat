@@ -309,6 +309,7 @@ def summarize(args):
     with (output / "metrics.csv").open("w") as handle:
         writer = csv.DictWriter(
             handle,
+            lineterminator="\n",
             fieldnames=[key for key in rows[0] if key != "control_gradient_max_deltas"],
         )
         writer.writeheader()

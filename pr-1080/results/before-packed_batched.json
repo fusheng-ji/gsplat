@@ -1,0 +1,22 @@
+{
+  "case": "packed_batched",
+  "version": "before",
+  "batch_dims": [
+    2
+  ],
+  "cameras": 2,
+  "packed": true,
+  "per_camera_colors": true,
+  "clipping": "partial",
+  "n_gaussians": 1008,
+  "width": 192,
+  "height": 144,
+  "dtype": "torch.float32",
+  "device": "cuda:0",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA B200",
+  "direct_status": "RuntimeError",
+  "error": "Tensors must have same number of dimensions: got 4 and 2",
+  "finite": true
+}

@@ -1,0 +1,20 @@
+{
+  "case": "packed_partial",
+  "version": "before",
+  "batch_dims": [],
+  "cameras": 1,
+  "packed": true,
+  "per_camera_colors": false,
+  "clipping": "partial",
+  "n_gaussians": 1008,
+  "width": 192,
+  "height": 144,
+  "dtype": "torch.float32",
+  "device": "cuda:0",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA B200",
+  "direct_status": "RuntimeError",
+  "error": "packed colors first dimension must match nnz; got colors [1008, 3] and nnz 756",
+  "finite": true
+}

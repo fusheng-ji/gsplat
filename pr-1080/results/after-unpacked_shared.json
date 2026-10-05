@@ -1,0 +1,28 @@
+{
+  "case": "unpacked_shared",
+  "version": "after",
+  "batch_dims": [],
+  "cameras": 1,
+  "packed": false,
+  "per_camera_colors": false,
+  "clipping": "none",
+  "n_gaussians": 1008,
+  "width": 192,
+  "height": 144,
+  "dtype": "torch.float32",
+  "device": "cuda:0",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA B200",
+  "direct_status": "success",
+  "gradient_reference_keys": [
+    "means",
+    "quats",
+    "scales",
+    "opacities",
+    "colors",
+    "viewmats"
+  ],
+  "projected_gaussians": 1008,
+  "finite": true
+}

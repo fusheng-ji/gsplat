@@ -1,0 +1,23 @@
+{
+  "measured_date_utc": "2026-10-05",
+  "before_commit": "512d366b67073d77ca099ede742683c165dfc23b",
+  "after_commit": "8bf4b762c1db0ec555d76df398a34ff89b9b9e68",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "driver": "580.126.20",
+  "gpu": "NVIDIA B200",
+  "native_binary_sha256": {
+    "before": "500d417f942e360549fe45d9593021f9d624375e85cfeb79d0b607a5c4557c45",
+    "after": "f728be954bcd551dcd31a4d31190445f5b3698e8f932bcde7b55396c482df41b"
+  },
+  "build_flags": {
+    "BUILD_2DGS": 1,
+    "BUILD_3DGS": 1,
+    "BUILD_3DGUT": 1,
+    "BUILD_CAMERA_WRAPPERS": 1,
+    "NUM_CHANNELS": "1,3,4",
+    "TORCH_CUDA_ARCH_LIST": "10.0"
+  },
+  "build_method": "Same full-feature build configuration. After rebuilds only Rendering.cpp; unchanged baseline objects are reused. The later clang-format pass changes whitespace only. Native binaries are not published.",
+  "independent_validation": "Fresh 2DGS-only build with channels 1,3,4,32: all 96 tests/test_2dgs.py tests pass."
+}

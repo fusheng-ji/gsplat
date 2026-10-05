@@ -1,0 +1,10 @@
+{
+  "version": "before",
+  "scene": "empty",
+  "renderer": "2dgs",
+  "packed": false,
+  "returncode": -8,
+  "signal": "SIGFPE",
+  "stdout": "",
+  "stderr": ""
+}

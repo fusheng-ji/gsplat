@@ -1,0 +1,82 @@
+[
+  {
+    "renderer": "3dgs",
+    "packed": false,
+    "before_empty_signal": "SIGFPE",
+    "after_background_error": 0.0,
+    "after_alpha_max": 0.0,
+    "after_depth_max": 0.0,
+    "background_gradient_error": 0.0,
+    "control_rgb_max_delta": 0.0,
+    "control_alpha_max_delta": 0.0,
+    "control_depth_max_delta": 0.0,
+    "control_gradient_max_delta": 9.313225746154785e-10,
+    "control_gradient_max_deltas": {
+      "grad_means": 4.656612873077393e-10,
+      "grad_quats": 1.4551915228366852e-11,
+      "grad_scales": 9.313225746154785e-10,
+      "grad_opacities": 2.9103830456733704e-11,
+      "grad_colors": 7.275957614183426e-12
+    }
+  },
+  {
+    "renderer": "3dgs",
+    "packed": true,
+    "before_empty_signal": "SIGFPE",
+    "after_background_error": 0.0,
+    "after_alpha_max": 0.0,
+    "after_depth_max": 0.0,
+    "background_gradient_error": 0.0,
+    "control_rgb_max_delta": 0.0,
+    "control_alpha_max_delta": 0.0,
+    "control_depth_max_delta": 0.0,
+    "control_gradient_max_delta": 1.3969838619232178e-09,
+    "control_gradient_max_deltas": {
+      "grad_means": 2.3283064365386963e-10,
+      "grad_quats": 1.4551915228366852e-11,
+      "grad_scales": 1.3969838619232178e-09,
+      "grad_opacities": 1.4551915228366852e-11,
+      "grad_colors": 7.275957614183426e-12
+    }
+  },
+  {
+    "renderer": "2dgs",
+    "packed": false,
+    "before_empty_signal": "SIGFPE",
+    "after_background_error": 0.0,
+    "after_alpha_max": 0.0,
+    "after_depth_max": 0.0,
+    "background_gradient_error": 0.0,
+    "control_rgb_max_delta": 0.0,
+    "control_alpha_max_delta": 0.0,
+    "control_depth_max_delta": 0.0,
+    "control_gradient_max_delta": 4.656612873077393e-10,
+    "control_gradient_max_deltas": {
+      "grad_means": 2.3283064365386963e-10,
+      "grad_quats": 4.3655745685100555e-11,
+      "grad_scales": 4.656612873077393e-10,
+      "grad_opacities": 2.9103830456733704e-11,
+      "grad_colors": 7.275957614183426e-12
+    }
+  },
+  {
+    "renderer": "2dgs",
+    "packed": true,
+    "before_empty_signal": "SIGFPE",
+    "after_background_error": 0.0,
+    "after_alpha_max": 0.0,
+    "after_depth_max": 0.0,
+    "background_gradient_error": 0.0,
+    "control_rgb_max_delta": 0.0,
+    "control_alpha_max_delta": 0.0,
+    "control_depth_max_delta": 0.0,
+    "control_gradient_max_delta": 4.656612873077393e-10,
+    "control_gradient_max_deltas": {
+      "grad_means": 4.656612873077393e-10,
+      "grad_quats": 4.3655745685100555e-11,
+      "grad_scales": 4.656612873077393e-10,
+      "grad_opacities": 1.4551915228366852e-11,
+      "grad_colors": 7.275957614183426e-12
+    }
+  }
+]

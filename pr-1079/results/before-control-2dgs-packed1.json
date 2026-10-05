@@ -1,0 +1,45 @@
+{
+  "renderer": "2dgs",
+  "packed": true,
+  "scene": "control",
+  "version": "before",
+  "n_gaussians": 1008,
+  "cameras": 1,
+  "width": 192,
+  "height": 144,
+  "dtype": "torch.float32",
+  "device": "cuda:0",
+  "finite": true,
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA B200",
+  "metadata_shapes": {
+    "radii": [
+      1008,
+      2
+    ],
+    "means2d": [
+      1008,
+      2
+    ],
+    "depths": [
+      1008
+    ],
+    "tiles_per_gauss": [
+      1008
+    ],
+    "isect_ids": [
+      3616
+    ],
+    "flatten_ids": [
+      3616
+    ],
+    "isect_offsets": [
+      1,
+      9,
+      12
+    ]
+  },
+  "rgb_loss": 0.19031910598278046,
+  "gradient_loss": "mean(RGB * linspace(0.5, 1.5, H*W).reshape(1,H,W,1))"
+}

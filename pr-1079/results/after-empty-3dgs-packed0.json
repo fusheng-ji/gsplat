@@ -1,0 +1,85 @@
+{
+  "renderer": "3dgs",
+  "packed": false,
+  "scene": "empty",
+  "version": "after",
+  "n_gaussians": 0,
+  "cameras": 2,
+  "width": 128,
+  "height": 96,
+  "dtype": "torch.float32",
+  "device": "cuda:0",
+  "finite": true,
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA B200",
+  "metadata_shapes": {
+    "radii": [
+      2,
+      0,
+      2
+    ],
+    "means2d": [
+      2,
+      0,
+      2
+    ],
+    "depths": [
+      2,
+      0
+    ],
+    "tiles_per_gauss": [
+      2,
+      0
+    ],
+    "isect_ids": [
+      0
+    ],
+    "flatten_ids": [
+      0
+    ],
+    "isect_offsets": [
+      2,
+      6,
+      8
+    ]
+  },
+  "rgb_background_max_error": 0.0,
+  "alpha_max_abs": 0.0,
+  "depth_max_abs": 0.0,
+  "background_gradient": [
+    [
+      12288.0,
+      12288.0,
+      12288.0
+    ],
+    [
+      12288.0,
+      12288.0,
+      12288.0
+    ]
+  ],
+  "background_gradient_max_error": 0.0,
+  "empty_gradient_shapes": {
+    "means": [
+      0,
+      3
+    ],
+    "quats": [
+      0,
+      4
+    ],
+    "scales": [
+      0,
+      3
+    ],
+    "opacities": [
+      0
+    ],
+    "colors": [
+      0,
+      1,
+      3
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+renderer,packed,before_empty_signal,after_background_error,after_alpha_max,after_depth_max,background_gradient_error,control_rgb_max_delta,control_alpha_max_delta,control_depth_max_delta,control_gradient_max_delta
+3dgs,False,SIGFPE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,9.313225746154785e-10
+3dgs,True,SIGFPE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.3969838619232178e-09
+2dgs,False,SIGFPE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,4.656612873077393e-10
+2dgs,True,SIGFPE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,4.656612873077393e-10

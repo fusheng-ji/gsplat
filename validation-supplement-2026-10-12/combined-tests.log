@@ -1,0 +1,18 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 44%]
+........................................................................ [ 59%]
+........................................................................ [ 74%]
+........................................................................ [ 88%]
+......................................................                   [100%]
+=============================== warnings summary ===============================
+../../../../../../../../../../home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87
+  /home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87: DeprecationWarning: module 'sre_constants' is deprecated
+    import sre_constants
+
+tests/test_2dgs.py::test_fully_fused_projection_packed_2dgs[batch_dims0-False]
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/validation-2dgs-20261012/tests/test_2dgs.py:237: UserWarning: Sparse invariant checks are implicitly disabled. Memory errors (e.g. SEGFAULT) will occur when operating on a sparse tensor which violates the invariants, but checks incur performance overhead. To silence this warning, explicitly opt in or out. See `torch.sparse.check_sparse_tensor_invariants.__doc__` for guidance.  (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:760.)
+    __radii = torch.sparse_coo_tensor(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+486 passed, 2 warnings in 114.81s (0:01:54)

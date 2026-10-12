@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-12",
+  "base": "512d366b67073d77ca099ede742683c165dfc23b",
+  "combined_native_and_2dgs_source": "917f9d0af8c1dc8b48ba7abdf65c7c96335a18bb",
+  "parents": [
+    {
+      "pr": 1079,
+      "head": "525031246f1954d1deba070368367e29d63d5850"
+    },
+    {
+      "pr": 1080,
+      "head": "8bf4b762c1db0ec555d76df398a34ff89b9b9e68"
+    },
+    {
+      "pr": 1068,
+      "head": "8b329dfcb9ce60fd76bb9bb5ba159ba80980d099"
+    },
+    {
+      "pr": 1070,
+      "head": "3acaba869bcaca5c93739a3c1f144faa7961e22d"
+    }
+  ],
+  "lidar_python_head": "3f2c3025a5543eb496ba391c915ae29194aff69a",
+  "native_binary_sha256": "955ebbc2c9c93bdf0d1dfa7e21736d402a6047b4f572875828961e19f61a49e4",
+  "gpu": "2x NVIDIA B200",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "channels": [
+    1,
+    3,
+    4,
+    32
+  ],
+  "shared_gpu_workload": true,
+  "new_timing_or_training_run": false
+}

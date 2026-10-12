@@ -1,0 +1,12 @@
+..at128,tile=8,rgb_max_abs=1.57952309e-06,rgb_nonboundary_max_abs=1.57952309e-06,alpha_max_abs=4.14252281e-06,alpha_nonboundary_max_abs=4.14252281e-06,boundary_pixels=0,alpha_max=0.732479393,pixels=153600
+.pandar128,tile=8,rgb_max_abs=0.00148436427,rgb_nonboundary_max_abs=2.20537186e-06,alpha_max_abs=0.00392158655,alpha_nonboundary_max_abs=4.08291817e-06,boundary_pixels=1,alpha_max=0.732373774,pixels=460800
+.at128,tile=16,rgb_max_abs=1.57952309e-06,rgb_nonboundary_max_abs=1.57952309e-06,alpha_max_abs=4.14252281e-06,alpha_nonboundary_max_abs=4.14252281e-06,boundary_pixels=0,alpha_max=0.732479393,pixels=153600
+.pandar128,tile=16,rgb_max_abs=0.00148436427,rgb_nonboundary_max_abs=2.20537186e-06,alpha_max_abs=0.00392158655,alpha_nonboundary_max_abs=4.08291817e-06,boundary_pixels=1,alpha_max=0.732373774,pixels=460800
+.
+=============================== warnings summary ===============================
+../../../../../../../../../../home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87
+  /home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87: DeprecationWarning: module 'sre_constants' is deprecated
+    import sre_constants
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+6 passed, 317 deselected, 1 warning in 32.72s

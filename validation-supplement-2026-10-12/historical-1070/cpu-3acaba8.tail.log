@@ -1,0 +1,30 @@
+tests/test_av_example.py:63
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/gsplat-open-prs-bugs-930cbc/tests/test_av_example.py:63: PytestUnknownMarkWarning: Unknown pytest.mark.slow - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.slow
+
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[band/exceeds-budget]
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[sym/float-violated]
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[sym/bool-violated]
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[flip-pred/amplifies]
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[cross-pred/one-non-cross]
+tests/test_assert_close_with_boundary_band.py::test_assert_close_with_boundary_band[cross-pred/shape-mismatch]
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/gsplat-open-prs-bugs-930cbc/tests/test_assert_close_with_boundary_band.py:66: UserWarning: [boundary-band] : all elements in band; no interior coverage. Verify the boundary_mask is not trivially True.
+    assert_close_with_boundary_band(**kwargs)
+
+tests/test_assert_close_with_boundary_band.py::test_band_bool_error_message_attributes_a_only
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/gsplat-open-prs-bugs-930cbc/tests/test_assert_close_with_boundary_band.py:688: UserWarning: [boundary-band] : all elements in band; no interior coverage. Verify the boundary_mask is not trivially True.
+    assert_close_with_boundary_band(
+
+tests/test_assert_close_with_boundary_band.py::test_band_float_error_reports_negative_sign_mean_when_actual_smaller
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/gsplat-open-prs-bugs-930cbc/tests/test_assert_close_with_boundary_band.py:708: UserWarning: [boundary-band] : all elements in band; no interior coverage. Verify the boundary_mask is not trivially True.
+    assert_close_with_boundary_band(
+
+tests/test_expect_helpers.py: 15 warnings
+  /home/wenbo.ji/egocentric/datastorage/conda_env/endogaussian_b200/lib/python3.11/site-packages/dash/testing/plugin.py:104: PytestRemovedIn10Warning: The hookimpl pytest_addhooks uses old-style configuration options (marks or attributes).
+  Please use the pytest.hookimpl(tryfirst=True) decorator instead
+   to configure the hooks.
+   See https://docs.pytest.org/en/latest/deprecations.html#configuring-hook-specs-impls-using-markers
+    @pytest.mark.tryfirst
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+685 passed, 977 skipped, 26 warnings in 249.50s (0:04:09)

@@ -1,0 +1,30 @@
+  /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/gsplat-open-prs-bugs-930cbc/tests/test_assert_close_with_boundary_band.py:708: UserWarning: [boundary-band] : all elements in band; no interior coverage. Verify the boundary_mask is not trivially True.
+    assert_close_with_boundary_band(
+
+tests/test_expect_helpers.py: 15 warnings
+  /home/wenbo.ji/egocentric/datastorage/conda_env/endogaussian_b200/lib/python3.11/site-packages/dash/testing/plugin.py:104: PytestRemovedIn10Warning: The hookimpl pytest_addhooks uses old-style configuration options (marks or attributes).
+  Please use the pytest.hookimpl(tryfirst=True) decorator instead
+   to configure the hooks.
+   See https://docs.pytest.org/en/latest/deprecations.html#configuring-hook-specs-impls-using-markers
+    @pytest.mark.tryfirst
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-allvalid-batch_dims0-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-allvalid-batch_dims1-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-allvalid-batch_dims2-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-somevalid-batch_dims0-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-somevalid-batch_dims1-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[globalz-0-somevalid-batch_dims2-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-allvalid-batch_dims0-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-allvalid-batch_dims1-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-allvalid-batch_dims2-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-somevalid-batch_dims0-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-somevalid-batch_dims1-ortho]
+FAILED tests/test_basic.py::test_fully_fused_projection_ut[distsensor-0-somevalid-batch_dims2-ortho]
+FAILED tests/test_basic.py::test_rasterize_to_pixels_eval3d[3-batch_dims10-0-True-False-False-pinhole-8]
+FAILED tests/test_basic.py::test_rasterize_to_pixels_eval3d[3-batch_dims11-0-True-False-False-pinhole-16]
+FAILED tests/test_basic.py::test_rasterize_to_pixels_eval3d[3-batch_dims48-0-True-True-True-pinhole-8]
+FAILED tests/test_basic.py::test_rasterize_to_pixels_eval3d[3-batch_dims49-0-True-True-True-pinhole-16]
+FAILED tests/test_compression.py::test_png_compression - ImportError: Please ...
+17 failed, 2736 passed, 133 skipped, 29 warnings, 8 subtests passed in 956.40s (0:15:56)

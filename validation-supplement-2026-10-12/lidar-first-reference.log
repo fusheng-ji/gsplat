@@ -1,0 +1,30 @@
+..at128,tile=8,rgb_max_abs=1.57952309e-06,alpha_max_abs=4.14252281e-06,alpha_max=0.732479393,pixels=153600
+.Fat128,tile=16,rgb_max_abs=1.57952309e-06,alpha_max_abs=4.14252281e-06,alpha_max=0.732479393,pixels=153600
+.F
+=================================== FAILURES ===================================
+________ test_rasterization_lidar_nontransparent_reference[8-pandar128] ________
+tests/test_rasterization.py:1014: in test_rasterization_lidar_nontransparent_reference
+    torch.testing.assert_close(alphas, ref_alphas, rtol=1e-3, atol=1e-3)
+E   AssertionError: Tensor-likes are not close!
+E   
+E   Mismatched elements: 1 / 460800 (0.0%)
+E   Greatest absolute difference: 0.00392158655449748 at index (0, 61, 1359, 0) (up to 0.001 allowed)
+E   Greatest relative difference: 1.0 at index (0, 61, 1359, 0) (up to 0.001 allowed)
+_______ test_rasterization_lidar_nontransparent_reference[16-pandar128] ________
+tests/test_rasterization.py:1014: in test_rasterization_lidar_nontransparent_reference
+    torch.testing.assert_close(alphas, ref_alphas, rtol=1e-3, atol=1e-3)
+E   AssertionError: Tensor-likes are not close!
+E   
+E   Mismatched elements: 1 / 460800 (0.0%)
+E   Greatest absolute difference: 0.00392158655449748 at index (0, 61, 1359, 0) (up to 0.001 allowed)
+E   Greatest relative difference: 1.0 at index (0, 61, 1359, 0) (up to 0.001 allowed)
+=============================== warnings summary ===============================
+../../../../../../../../../../home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87
+  /home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/pkg_resources/_vendor/pyparsing.py:87: DeprecationWarning: module 'sre_constants' is deprecated
+    import sre_constants
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_rasterization.py::test_rasterization_lidar_nontransparent_reference[8-pandar128]
+FAILED tests/test_rasterization.py::test_rasterization_lidar_nontransparent_reference[16-pandar128]
+2 failed, 4 passed, 317 deselected, 1 warning in 128.34s (0:02:08)

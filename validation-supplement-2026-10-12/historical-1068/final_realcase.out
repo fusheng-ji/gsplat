@@ -1,0 +1,20 @@
+trainer main exit=1
+RuntimeError: grad.depths must be contiguous
+RuntimeError: grad.depths must be contiguous
+trainer 8b329df exit=0
+loss=0.379| sh degree=0| :   0%|          | 0/200 [00:00<?, ?it/s]
+loss=0.195| sh degree=0| : 100%|██████████| 200/200 [00:28<00:00,  6.98it/s]
+saved realcase/median_main.npz has_compute_median False batch_error 
+saved realcase/median_61003a2.npz has_compute_median False batch_error 
+saved realcase/median_8b329df.npz has_compute_median True batch_error 
+saved realcase/multicam_main.npz has_compute_median False batch_error opacities must be contiguous
+saved realcase/multicam_0f91ca6.npz has_compute_median False batch_error 
+median main vs 61003a2: {"ref_valid_pixels": 1089251, "main_rgbmode_vs_rgbed_max_abs": 10.989508628845215, "main_rgbmode_vs_rgbed_mean_abs_valid": 1.9419528245925903, "fix_rgbmode_vs_rgbed_max_abs": 0.0, "main_rgbmode_range": [0.0, 3.1335361003875732], "ref_depth_p1_p99": [0.8272068500518799, 7.251735210418701]}
+median main vs 8b329df: {"ref_valid_pixels": 1089251, "main_rgbmode_vs_rgbed_max_abs": 10.989508628845215, "main_rgbmode_vs_rgbed_mean_abs_valid": 1.9419528245925903, "fix_rgbmode_vs_rgbed_max_abs": 0.0, "main_rgbmode_range": [0.0, 3.1335361003875732], "ref_depth_p1_p99": [0.8272068500518799, 7.251735210418701]}
+multicam main vs 0f91ca6: {"main_batch_error": "opacities must be contiguous", "fix_batch_error": "", "fix_batch_vs_single_max_abs_per_view": [0.0, 0.0, 0.0]}
+previous figure stats:
+{"ref_valid_pixels": 1089251, "main_rgbmode_vs_rgbed_max_abs": 10.989508628845215, "main_rgbmode_vs_rgbed_mean_abs_valid": 1.9419528245925903, "fix_rgbmode_vs_rgbed_max_abs": 0.0, "main_rgbmode_range": [0.0, 3.1335361003875732], "ref_depth_p1_p99": [0.8272068500518799, 7.251735210418701]}
+
+{"main_batch_error": "opacities must be contiguous", "fix_batch_error": "", "fix_batch_vs_single_max_abs_per_view": [0.0, 0.0, 0.0]}
+
+REALCASE_DONE

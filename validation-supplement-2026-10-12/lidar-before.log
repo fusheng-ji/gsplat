@@ -1,0 +1,25 @@
+Python source: /data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat-pr-validation/supplement-2026-10-12/main-source/gsplat/__init__.py
+at128 EXPECTED OLD RENDERING FAILURE
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/validation-lidar-20261012/tests/test_rasterization.py", line 924, in test_rasterization_lidar_tiling_fits_tile_size
+    torch.testing.assert_close(renders, renders_again, atol=0, rtol=0)
+  File "/home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/torch/testing/_comparison.py", line 1600, in assert_close
+    raise error_metas[0].to_error(msg)
+AssertionError: Tensor-likes are not equal!
+
+Mismatched elements: 337803 / 460800 (73.3%)
+Greatest absolute difference: 6.283140182495117 at index (0, 119, 4, 2)
+Greatest relative difference: inf at index (0, 4, 800, 0)
+pandar128 EXPECTED OLD RENDERING FAILURE
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/data/wrd/projects/students/wenbo.ji/egocentric_video_generation/gsplat/.claude/worktrees/validation-lidar-20261012/tests/test_rasterization.py", line 924, in test_rasterization_lidar_tiling_fits_tile_size
+    torch.testing.assert_close(renders, renders_again, atol=0, rtol=0)
+  File "/home/wenbo.ji/miniconda3/envs/endogaussian_b200/lib/python3.11/site-packages/torch/testing/_comparison.py", line 1600, in assert_close
+    raise error_metas[0].to_error(msg)
+AssertionError: Tensor-likes are not equal!
+
+Mismatched elements: 720968 / 1382400 (52.2%)
+Greatest absolute difference: 6.283183574676514 at index (0, 93, 2350, 2)
+Greatest relative difference: inf at index (0, 2, 643, 2)

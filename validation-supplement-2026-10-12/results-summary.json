@@ -1,0 +1,19 @@
+{
+  "2dgs": {
+    "passed": 486,
+    "existing": 118,
+    "additional": 368,
+    "seconds": 114.81
+  },
+  "lidar": {
+    "passed": 6,
+    "seconds": 32.72,
+    "max_nonboundary_rgb_abs_error": 2.20537186e-06,
+    "max_nonboundary_alpha_abs_error": 4.14252281e-06,
+    "pandar128_boundary_pixels_per_tiling": 1
+  },
+  "full_formatting": "passed for combined and lidar trees",
+  "full_repository_tests_rerun": false,
+  "fresh_training_or_timing": false,
+  "fresh_sanitizer_run": false
+}

@@ -1,0 +1,35 @@
+build at 3acaba8: 1 rebuilds, exit=0
+format 78d4c42 exit=0
+format 3acaba8 exit=0
+build at 3acaba8: 0 rebuilds, exit=1
+multicam @3acaba8:       3 PASSED       2 XFAIL 
+PASSED tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[RGB]
+PASSED tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[D]
+PASSED tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[ED]
+XFAIL tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[RGB+D]
+XFAIL tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[RGB+ED]
+XFAIL tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[RGB+D] - RGB+depth backward requires PR #1068
+XFAIL tests/test_2dgs.py::test_rasterization_2dgs_multi_camera[RGB+ED] - RGB+depth backward requires PR #1068
+build at main: 0 rebuilds, exit=1
+multicam test on main: 5 failed, 18 deselected, 2 warnings in 1.76s | errors:       5 E       RuntimeError: opacities must be contiguous 
+build at 78d4c42: 0 rebuilds, exit=1
+lidar @78d4c42: 1 passed, 317 deselected, 2 warnings in 3.25s
+build at main: 0 rebuilds, exit=1
+lidar test on main: 1 failed, 317 deselected, 2 warnings in 3.12s
+E       AssertionError: Tensor-likes are not equal!
+E       
+E       Mismatched elements: 337803 / 460800 (73.3%)
+E       Greatest absolute difference: 6.283140182495117 at index (0, 119, 4, 2)
+E       Greatest relative difference: inf at index (0, 4, 800, 0)
+tests/test_zz_lidar.py:923: AssertionError
+build at merge-1068-1070: 0 rebuilds, exit=1
+multicam with #1068 merged:       5 PASSED 
+build at merge-all: 0 rebuilds, exit=1
+all three merged, targeted: 16 passed, 335 deselected, 2 warnings in 4.09s | outcomes:      16 PASSED 
+build at 78d4c42: 0 rebuilds, exit=1
+cpu 78d4c42: 685 passed, 972 skipped, 26 warnings in 338.62s (0:05:38)
+gpu 78d4c42: 17 failed, 2736 passed, 133 skipped, 29 warnings, 8 subtests passed in 956.40s (0:15:56)
+build at 3acaba8: 0 rebuilds, exit=1
+cpu 3acaba8: 685 passed, 977 skipped, 26 warnings in 249.50s (0:04:09)
+gpu 3acaba8: 17 failed, 2738 passed, 133 skipped, 2 xfailed, 29 warnings, 8 subtests passed in 1951.69s (0:32:31)
+V3_DONE
